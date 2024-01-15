@@ -1,0 +1,26 @@
+version: "0.1"
+
+secrets:
+  # local is the only supported source
+  source: "local"
+  # esh-scripts will try to find key file from the list of locations
+  # to generate a key file, run `esh-scripts secrets genkey > keypair.json`
+  keyFile:
+    - ./keypair.json
+    - $HOME/.config/esh-server/keypair.json
+
+docker:
+  # global docker volumes
+  volumes:
+    - files-vol
+    - name: media-vol
+      driver: local
+      options:
+        - type=nfs
+        - o=addr=192.168.101.2,rw
+        - device=:/shared/nfs/demo-media
+    - vaultwarden-vol
+
+  # global docker networks
+  networks:
+    - proxy-net

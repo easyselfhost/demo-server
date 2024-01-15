@@ -1,0 +1,26 @@
+version: "3"
+
+include:
+  - ../compose-common.yml
+
+services:
+  speedtest:
+    container_name: speedtest
+    image: ghcr.io/librespeed/speedtest:latest
+    restart: always
+    networks:
+      - proxy-net
+    expose:
+      - 80
+    environment:
+      MODE: standalone
+      TITLE: "LibreSpeed"
+
+  stirling-pdf:
+    image: "frooodle/s-pdf:0.18.1"
+    container_name: "stirling-pdf"
+    restart: unless-stopped
+    expose:
+      - 8080
+    networks:
+      - proxy-net

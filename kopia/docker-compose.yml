@@ -1,0 +1,44 @@
+version: "3"
+
+include:
+  - ../compose-common.yml
+
+volumes:
+  silverbullet-vol:
+    external: true
+  vaultwarden-vol:
+    external: true
+  config:
+
+services:
+  kopia:
+    image: "kopia/kopia:0.15.0"
+    container_name: "kopia"
+    restart: unless-stopped
+    expose:
+      - 51515
+    networks:
+      - proxy-net
+    # Setup the server that provides the web gui
+    command:
+      - server
+      - start
+      - --disable-csrf-token-checks
+      - --insecure
+      - --address=0.0.0.0:51515
+      - --enable-actions
+      - --server-username=kopia
+      - --server-password=${KOPIA_SERVER_PASSWORD}
+      - --password=${KOPIA_SECRET}
+    volumes:
+      - config:/app/config:rw
+
+      # Script
+      - ./docker.sh:/docker.sh:ro
+
+      # Docker UNIX socket
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+
+      # Volumes to backup
+      - vaultwarden-vol:/backup/vaultwarden:ro
+      - silverbullet-vol:/backup/silverbullet:ro

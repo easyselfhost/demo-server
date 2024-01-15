@@ -1,0 +1,30 @@
+version: "3"
+
+include:
+  - ../compose-common.yml
+
+volumes:
+  caddy:
+
+configs:
+  caddyfile:
+    file: ./Caddyfile
+
+services:
+  caddy:
+    image: "ghcr.io/easyselfhost/caddy:2.7.5"
+    container_name: "caddy"
+    restart: unless-stopped
+    networks:
+      - proxy-net
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    configs:
+      - source: caddyfile
+        target: /etc/caddy/Caddyfile
+    volumes:
+      - caddy:/data
+    environment:
+      - CF_TOKEN

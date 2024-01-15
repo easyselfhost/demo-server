@@ -1,0 +1,32 @@
+version: "3"
+
+include:
+  - ../compose-common.yml
+
+configs:
+  filebrowser:
+    file: ./filebrowser.json
+
+volumes:
+  files-vol:
+    external: true
+  media-vol:
+    external: true
+  db:
+
+services:
+  filebrowser:
+    image: "filebrowser/filebrowser:v2.27.0"
+    container_name: "filebrowser"
+    restart: unless-stopped
+    expose:
+      - 80
+    configs:
+      - source: filebrowser
+        target: /.filebrowser.json
+    networks:
+      - proxy-net
+    volumes:
+      - db:/database:rw
+      - files-vol:/srv:rw
+      - media-vol:/srv/media:rw

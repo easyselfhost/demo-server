@@ -1,0 +1,44 @@
+*.demo.easyselfhost.com {
+    tls {
+        dns cloudflare {env.CF_TOKEN}
+    }
+
+    @filebrowser host files.demo.easyselfhost.com
+    handle @filebrowser {
+        reverse_proxy filebrowser:80
+    }
+
+    @jellyfin host jf.demo.easyselfhost.com
+    handle @jellyfin {
+        reverse_proxy jellyfin:8096
+    }
+
+    @kopia host kopia.demo.easyselfhost.com
+    handle @kopia {
+        reverse_proxy kopia:51515
+    }
+
+    @silverbullet host silverbullet.demo.easyselfhost.com
+    handle @silverbullet {
+        reverse_proxy silverbullet:3000
+    }
+
+    @speedtest host speedtest.demo.easyselfhost.com
+    handle @speedtest {
+        reverse_proxy speedtest:80
+    }
+
+    @stirlingpdf host pdf.demo.easyselfhost.com
+    handle @stirlingpdf {
+        reverse_proxy stirling-pdf:8080
+    }
+
+    @vaultwarden host vault.demo.easyselfhost.com
+    handle @vaultwarden {
+        reverse_proxy vaultwarden:80
+    }
+
+    handle {
+        respond 404
+    }
+}

@@ -1,0 +1,26 @@
+version: "3"
+
+include:
+  - ../compose-common.yml
+
+volumes:
+  media-vol:
+    external: true
+  jellyfin-config:
+  jellyfin-cache:
+
+services:
+  jellyfin:
+    container_name: "jellyfin"
+    image: "jellyfin/jellyfin:10.8.10"
+    restart: unless-stopped
+    expose:
+      - 8096
+    networks:
+      - proxy-net
+    volumes:
+      - jellyfin-config:/config
+      - jellyfin-cache:/cache
+      - media-vol:/media
+    environment:
+      - JELLYFIN_PublishedServerUrl=https://jf.demo.easyselfhost.com

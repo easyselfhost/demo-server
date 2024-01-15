@@ -1,0 +1,19 @@
+version: "3"
+
+include:
+  - ../compose-common.yml
+
+volumes:
+  vaultwarden-vol:
+    external: true
+
+services:
+  vaultwarden:
+    image: "vaultwarden/server:1.30.0"
+    container_name: "vaultwarden"
+    restart: unless-stopped
+    expose: 80
+    networks:
+      - proxy-net
+    volumes:
+      - vaultwarden-vol:/data
