@@ -20,6 +20,7 @@ docker:
         - o=addr=192.168.101.2,rw
         - device=:/shared/nfs/demo_server
     - vaultwarden-vol
+    - silverbullet-vol
 
   # global docker networks
   networks:
