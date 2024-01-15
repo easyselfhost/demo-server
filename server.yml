@@ -18,7 +18,7 @@ docker:
       options:
         - type=nfs
         - o=addr=192.168.101.2,rw
-        - device=:/shared/nfs/demo-media
+        - device=:/shared/nfs/demo_server
     - vaultwarden-vol
 
   # global docker networks
